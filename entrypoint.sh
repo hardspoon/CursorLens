@@ -5,10 +5,14 @@ if [ -z "$NGROK_AUTHTOKEN" ]; then
     exit 1
 fi
 
-# Use Railway domain as upstream
-if [ -n "$RAILWAY_DOMAIN" ]; then
-    exec ngrok http --authtoken="$NGROK_AUTHTOKEN" --hostname="$NGROK_URL" "http://${RAILWAY_DOMAIN}:4040"
-else
+if [ -z "$RAILWAY_DOMAIN" ]; then
     echo "Error: RAILWAY_DOMAIN is not set"
     exit 1
 fi
+
+# Replace environment variables in config
+envsubst < /app/ngrok.yml > /app/ngrok.yml.tmp
+mv /app/ngrok.yml.tmp /app/ngrok.yml
+
+# Start ngrok with config file
+exec ngrok start --config=/app/ngrok.yml --all

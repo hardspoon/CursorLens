@@ -5,5 +5,4 @@ dockerfile = "Dockerfile"
 [services.env]
 NGROK_AUTHTOKEN = "${NGROK_AUTHTOKEN}"
 RAILWAY_DOMAIN = "faithful-simplicity-production.up.railway.app"
-# Optional: Set your custom domain
 NGROK_URL = "thankfully-innocent-llama.ngrok-free.app"

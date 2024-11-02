@@ -1,0 +1,7 @@
+version: "2"
+authtoken: ${NGROK_AUTHTOKEN}
+tunnels:
+  railway:
+    proto: http
+    addr: ${RAILWAY_DOMAIN}:4040
+    domain: ${NGROK_URL}
