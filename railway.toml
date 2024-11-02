@@ -7,6 +7,6 @@ plan = "free"
 healthcheck = "/"
 
 [services.env]
-PORT = "80"
+PORT = "3000"
 NGROK_TOKEN = ""
 REGION = ""
