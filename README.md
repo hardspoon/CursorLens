@@ -5,9 +5,9 @@ This repository contains a Dockerfile and Railway configuration for running an N
 ## Features
 
 - Automated Ngrok tunnel setup for TCP connections
-- Configurable region for optimal performance
-- Simple netcat listener on port 3000
+- Persistent netcat listener that automatically restarts
 - Railway-ready deployment configuration
+- Robust error handling and tunnel verification
 
 ## Setup Instructions
 
@@ -16,20 +16,19 @@ This repository contains a Dockerfile and Railway configuration for running an N
 3. Connect your forked repository to Railway
 4. Set the required environment variables:
    - `NGROK_TOKEN`: Your Ngrok authentication token (get it from https://dashboard.ngrok.com)
-   - `REGION`: Desired Ngrok region (default: jp)
 
 ## Environment Variables
 
 - `PORT`: The port to expose (default: 3000)
 - `NGROK_TOKEN`: Your Ngrok authentication token (required)
-- `REGION`: Ngrok region for the tunnel (optional, default: jp)
 
 ## Usage
 
 Once deployed, the service will:
-1. Start a netcat listener on port 3000
-2. Create an Ngrok tunnel to port 3000
+1. Start ngrok with your auth token
+2. Wait for the tunnel to be established
 3. Display the connection details in the logs
+4. Start a persistent netcat listener on port 3000
 
 ## Exposed Ports
 
@@ -46,7 +45,10 @@ nc <ngrok-provided-host> <ngrok-provided-port>
 
 ## Troubleshooting
 
-If you see ERR_NGROK_8012, make sure:
-1. Your NGROK_TOKEN is correctly set in Railway
-2. The service has fully started up (wait a few seconds after deployment)
-3. The region you've selected is available for your ngrok account
+If you encounter issues:
+1. Make sure your NGROK_TOKEN is correctly set in Railway
+2. Wait at least 30 seconds after deployment for the tunnel to establish
+3. Check the Railway logs for the connection details
+4. If you see "Waiting for ngrok tunnel..." message, the service is still starting up
+
+Note: The free tier of ngrok has some limitations. If you need additional features or connections, you may need to upgrade your ngrok account.

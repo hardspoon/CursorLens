@@ -9,4 +9,3 @@ healthcheck = "/"
 [services.env]
 PORT = "3000"
 NGROK_TOKEN = ""
-REGION = ""
