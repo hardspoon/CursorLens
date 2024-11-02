@@ -5,8 +5,10 @@ if [ -z "$NGROK_AUTHTOKEN" ]; then
     exit 1
 fi
 
-if [ -n "$NGROK_URL" ]; then
-    exec ngrok http --authtoken="$NGROK_AUTHTOKEN" --url="$NGROK_URL" "$PORT"
+# Use Railway domain as upstream
+if [ -n "$RAILWAY_DOMAIN" ]; then
+    exec ngrok http --authtoken="$NGROK_AUTHTOKEN" --hostname="$NGROK_URL" "http://${RAILWAY_DOMAIN}:4040"
 else
-    exec ngrok http --authtoken="$NGROK_AUTHTOKEN" "$PORT"
+    echo "Error: RAILWAY_DOMAIN is not set"
+    exit 1
 fi

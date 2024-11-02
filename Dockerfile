@@ -1,10 +1,10 @@
 FROM ngrok/ngrok:latest
 
-ENV PORT=80
-WORKDIR /app
+ENV RAILWAY_DOMAIN=faithful-simplicity-production.up.railway.app
 
+WORKDIR /app
 COPY --chmod=755 entrypoint.sh .
 
-EXPOSE 80 4040
+EXPOSE 4040
 
 ENTRYPOINT ["./entrypoint.sh"]
