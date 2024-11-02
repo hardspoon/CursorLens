@@ -31,9 +31,9 @@ RUN pnpm run build
 # Expose the application and ngrok ports
 EXPOSE 3000 4040
 
-# Create start script that runs both ngrok and the application
-RUN echo '#!/bin/sh\nngrok http 3000 --log stdout & sh ./start.sh' > /app/start-with-ngrok.sh
-RUN chmod +x /app/start-with-ngrok.sh
+# Create start script with proper line endings and path
+RUN printf '#!/bin/sh\ncd /app\nngrok http 3000 --log stdout & sh ./start.sh\n' > /app/start-with-ngrok.sh \
+    && chmod +x /app/start-with-ngrok.sh
 
 # Start both ngrok and the application
-CMD ["/app/start-with-ngrok.sh"]
+ENTRYPOINT ["/bin/sh", "/app/start-with-ngrok.sh"]
