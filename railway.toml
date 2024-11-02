@@ -1,0 +1,12 @@
+[[services]]
+name = "Ngrok"
+protocol = "web"
+dockerfile = "Dockerfile"
+region = "oregon"
+plan = "free"
+healthcheck = "/"
+
+[services.env]
+PORT = "80"
+NGROK_TOKEN = ""
+REGION = ""
