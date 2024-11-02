@@ -2,10 +2,7 @@
 name = "Ngrok"
 protocol = "web"
 dockerfile = "Dockerfile"
-region = "oregon"
 plan = "free"
-healthcheck = "/"
 
 [services.env]
 PORT = "3000"
-NGROK_TOKEN = ""

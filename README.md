@@ -6,7 +6,7 @@ This repository contains a Dockerfile and Railway configuration for running an N
 
 - Automated Ngrok tunnel setup for TCP connections
 - Persistent netcat listener that automatically restarts
-- Railway-ready deployment configuration
+- Proper authentication token handling
 - Robust error handling and tunnel verification
 
 ## Setup Instructions
@@ -14,41 +14,48 @@ This repository contains a Dockerfile and Railway configuration for running an N
 1. Fork this repository
 2. Create a new project on [Railway](https://railway.app)
 3. Connect your forked repository to Railway
-4. Set the required environment variables:
+4. Set the required environment variable:
    - `NGROK_TOKEN`: Your Ngrok authentication token (get it from https://dashboard.ngrok.com)
 
 ## Environment Variables
 
-- `PORT`: The port to expose (default: 3000)
 - `NGROK_TOKEN`: Your Ngrok authentication token (required)
+- `PORT`: The port to expose (default: 3000)
 
 ## Usage
 
 Once deployed, the service will:
-1. Start ngrok with your auth token
-2. Wait for the tunnel to be established
-3. Display the connection details in the logs
-4. Start a persistent netcat listener on port 3000
-
-## Exposed Ports
-
-The following ports are exposed:
-- 3000: Main service port
-- 4040: Ngrok web interface
+1. Configure ngrok with your authentication token
+2. Start a TCP tunnel to port 3000
+3. Wait for the tunnel to be established
+4. Display the connection URL in the logs
+5. Start a persistent netcat listener
 
 ## Testing the Connection
 
-You can test the connection using netcat:
+Once the service displays the connection URL, you can connect using:
 ```bash
-nc <ngrok-provided-host> <ngrok-provided-port>
+nc <ngrok-host> <ngrok-port>
+```
+
+Example:
+```bash
+nc 0.tcp.ngrok.io 12345
 ```
 
 ## Troubleshooting
 
 If you encounter issues:
-1. Make sure your NGROK_TOKEN is correctly set in Railway
-2. Wait at least 30 seconds after deployment for the tunnel to establish
-3. Check the Railway logs for the connection details
-4. If you see "Waiting for ngrok tunnel..." message, the service is still starting up
 
-Note: The free tier of ngrok has some limitations. If you need additional features or connections, you may need to upgrade your ngrok account.
+1. Check the Railway logs for these common messages:
+   - "Error: NGROK_TOKEN is not set" - Verify your environment variable is set
+   - "Waiting for ngrok tunnel..." - Service is still starting up
+   - "Connection URL: tcp://..." - Service is ready to use
+
+2. Common solutions:
+   - Wait at least 30 seconds after deployment for the tunnel to establish
+   - Verify your NGROK_TOKEN is correctly set in Railway
+   - Check the logs for any error messages
+   - If the connection fails, try redeploying the service
+
+Note: Free tier ngrok accounts have limitations on concurrent tunnels and connections. If you need more resources, consider upgrading your ngrok account.
