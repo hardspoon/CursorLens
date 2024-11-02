@@ -3,5 +3,5 @@ name = "Ngrok-TCP-Tunnel"
 dockerfile = "Dockerfile"
 
 [services.env]
-NGROK_TOKEN = "${NGROK_TOKEN}"
+NGROK_AUTHTOKEN = "${NGROK_AUTHTOKEN}"
 PORT = "3000"
