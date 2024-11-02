@@ -5,4 +5,5 @@ dockerfile = "Dockerfile"
 [services.env]
 NGROK_AUTHTOKEN = "${NGROK_AUTHTOKEN}"
 PORT = "80"
-NGROK_URL = "thankfully-innocent-llama.ngrok-free.app"
+# Optional: Set your custom domain
+# NGROK_URL = "thankfully-innocent-llama.ngrok-free.app"
