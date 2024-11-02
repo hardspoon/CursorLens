@@ -1,7 +1,7 @@
 FROM ngrok/ngrok:latest
 
 # Install envsubst
-RUN apk add --no-cache gettext
+RUN apt-get update && apt-get install -y gettext-base && rm -rf /var/lib/apt/lists/*
 
 ENV RAILWAY_DOMAIN=faithful-simplicity-production.up.railway.app
 
