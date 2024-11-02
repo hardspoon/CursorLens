@@ -2,60 +2,62 @@
 
 This repository contains a Dockerfile and Railway configuration for running an Ngrok service that exposes a TCP tunnel on port 3000.
 
-## Features
+## Ngrok Setup Process
 
-- Automated Ngrok tunnel setup for TCP connections
-- Persistent netcat listener that automatically restarts
-- Proper authentication token handling
-- Robust error handling and tunnel verification
+The service automatically sets up ngrok using the following steps:
+
+1. Downloads and installs ngrok v3
+2. Creates ngrok configuration file at `/root/.ngrok2/ngrok.yml`
+3. Configures authentication using the provided `NGROK_TOKEN`
+4. Starts ngrok in TCP tunnel mode for port 3000
+5. Verifies tunnel establishment via ngrok's API
 
 ## Setup Instructions
 
-1. Fork this repository
-2. Create a new project on [Railway](https://railway.app)
-3. Connect your forked repository to Railway
-4. Set the required environment variable:
-   - `NGROK_TOKEN`: Your Ngrok authentication token (get it from https://dashboard.ngrok.com)
+1. Get your ngrok authentication token:
+   - Sign up at [ngrok.com](https://ngrok.com)
+   - Go to [dashboard.ngrok.com/get-started/your-authtoken](https://dashboard.ngrok.com/get-started/your-authtoken)
+   - Copy your authentication token
+
+2. Deploy to Railway:
+   - Fork this repository
+   - Create a new project on [Railway](https://railway.app)
+   - Connect your forked repository
+   - Add your ngrok authentication token as `NGROK_TOKEN` in Railway's environment variables
 
 ## Environment Variables
 
-- `NGROK_TOKEN`: Your Ngrok authentication token (required)
+- `NGROK_TOKEN`: Your ngrok authentication token (required)
 - `PORT`: The port to expose (default: 3000)
 
 ## Usage
 
-Once deployed, the service will:
+The service will automatically:
 1. Configure ngrok with your authentication token
 2. Start a TCP tunnel to port 3000
-3. Wait for the tunnel to be established
-4. Display the connection URL in the logs
-5. Start a persistent netcat listener
+3. Display the tunnel URL in the logs
+4. Start a netcat listener on port 3000
 
 ## Testing the Connection
 
-Once the service displays the connection URL, you can connect using:
+Once the service displays the tunnel URL (format: `tcp://X.tcp.ngrok.io:XXXXX`), connect using:
 ```bash
-nc <ngrok-host> <ngrok-port>
-```
-
-Example:
-```bash
-nc 0.tcp.ngrok.io 12345
+nc X.tcp.ngrok.io XXXXX
 ```
 
 ## Troubleshooting
 
-If you encounter issues:
+1. Verify ngrok setup:
+   - Check Railway logs for "Ngrok tunnel established:"
+   - If you see "Waiting for tunnel..." the service is still starting
+   - Ensure your `NGROK_TOKEN` is correctly set
 
-1. Check the Railway logs for these common messages:
-   - "Error: NGROK_TOKEN is not set" - Verify your environment variable is set
-   - "Waiting for ngrok tunnel..." - Service is still starting up
-   - "Connection URL: tcp://..." - Service is ready to use
+2. Common issues:
+   - "Error: NGROK_TOKEN is not set" - Add the token to Railway environment variables
+   - No tunnel URL - Wait 30 seconds for setup to complete
+   - Connection refused - Make sure to use the correct host and port from the logs
 
-2. Common solutions:
-   - Wait at least 30 seconds after deployment for the tunnel to establish
-   - Verify your NGROK_TOKEN is correctly set in Railway
-   - Check the logs for any error messages
-   - If the connection fails, try redeploying the service
-
-Note: Free tier ngrok accounts have limitations on concurrent tunnels and connections. If you need more resources, consider upgrading your ngrok account.
+3. Ngrok limitations:
+   - Free accounts have restrictions on concurrent tunnels
+   - Some features require a paid account
+   - Check [ngrok pricing](https://ngrok.com/pricing) for details

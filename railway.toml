@@ -1,8 +1,10 @@
 [[services]]
-name = "Ngrok"
+name = "Ngrok-TCP-Tunnel"
 protocol = "web"
 dockerfile = "Dockerfile"
 plan = "free"
 
 [services.env]
 PORT = "3000"
+# Add your ngrok token in Railway's environment variables
+# NGROK_TOKEN = "your-token-here"
